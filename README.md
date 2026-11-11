@@ -2,7 +2,7 @@
 
 Umbra Astro AI puts four AI tools for [Siril](https://siril.org) into one script and one window: **Umbra Deblur**, **Umbra Denoise**, **Umbra Starless** and **Umbra Gradient**. It is a Siril Python script with AI models. It runs locally on your computer and is free. Pick the tool from the dropdown at the top. The processing code is the same as in the four single-tool scripts.
 
-**Status: Beta (v0.1.0).** Expect rough edges.
+**Status: Beta (v0.1.1).** Expect rough edges.
 
 ![Umbra Astro AI panel](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
 ![Umbra Astro AI update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
