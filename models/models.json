@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "models": [
+    {
+      "tool": "deblur",
+      "id": "umbra_deblur_v1.0",
+      "name": "Umbra Deblur v1.0",
+      "version": "1.0",
+      "experimental": false,
+      "default": true,
+      "format": "onnx",
+      "file": "umbra_deblur_v1.0.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-deblur/releases/download/v0.1.0/umbra_deblur_v1.0.onnx",
+      "sha256": "c67c60a08257b470b1d9f8c621aa48e3423a98bed79ebd4b0dfeff07535faf8b",
+      "size_bytes": 198635024
+    },
+    {
+      "tool": "deblur",
+      "id": "umbra_deblur_v1.1_experimental",
+      "name": "Umbra Deblur v1.1 (experimental)",
+      "version": "1.1",
+      "experimental": true,
+      "default": false,
+      "format": "onnx",
+      "file": "umbra_deblur_v1.1_experimental.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-deblur/releases/download/v0.1.0/umbra_deblur_v1.1_experimental.onnx",
+      "sha256": "f09c793fabce0be34fb23c27b3885e16a1879064af8291a4fdc25ac1f79e91e2",
+      "size_bytes": 198635024
+    },
+    {
+      "tool": "denoise",
+      "id": "umbra_denoise_v3.1_experimental",
+      "name": "Umbra Denoise v3.1 (experimental)",
+      "version": "3.1",
+      "experimental": true,
+      "default": true,
+      "format": "onnx",
+      "file": "umbra_denoise_v3.1_experimental.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-denoise/releases/download/v0.1.0/umbra_denoise_v3.1_experimental.onnx",
+      "sha256": "e5f56fbd0509d5d926d9e353a49afda8d2a921a9b0e44b00cde895c605e227d1",
+      "size_bytes": 198627684
+    },
+    {
+      "tool": "starless",
+      "id": "umbra_starless_v1.0",
+      "name": "Umbra Starless v1.0",
+      "version": "1.0",
+      "experimental": false,
+      "default": true,
+      "format": "onnx",
+      "file": "umbra_starless_v1.0.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-starless/releases/download/v0.1.0/umbra_starless_v1.0.onnx",
+      "sha256": "599856db4f047960829d85360b420f48f932e1f0c179e107fd19560a88e528b9",
+      "size_bytes": 198671695
+    },
+    {
+      "tool": "starless",
+      "id": "umbra_starless_v1.1_experimental",
+      "name": "Umbra Starless v1.1 (experimental)",
+      "version": "1.1",
+      "experimental": true,
+      "default": false,
+      "format": "onnx",
+      "file": "umbra_starless_v1.1_experimental.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-starless/releases/download/v0.1.0/umbra_starless_v1.1_experimental.onnx",
+      "sha256": "73007ac76d96bfddcdfcc47a45385a815fe7dc5d6fd385b431a474ae73930aca",
+      "size_bytes": 198671695
+    },
+    {
+      "tool": "gradient",
+      "id": "umbra_gradient_v7.0",
+      "name": "Umbra Gradient v7.0",
+      "version": "7.0",
+      "experimental": false,
+      "default": true,
+      "format": "onnx",
+      "file": "umbra_gradient_v7.0.onnx",
+      "url": "https://github.com/Kishanhpatel/umbra-gradient/releases/download/v0.1.0/umbra_gradient_v7.0.onnx",
+      "sha256": "5ee7001de1bb0d4a1de68293e3aa06055a1d57dfd70e5648b1ae092f74cf6fe7",
+      "size_bytes": 223213091
+    }
+  ],
+  "script": {
+    "version": "0.1.0",
+    "url": "https://github.com/Kishanhpatel/umbra-astro-ai/releases/tag/v0.1.0"
+  }
+}
