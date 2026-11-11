@@ -2,7 +2,7 @@
 
 Umbra Astro AI puts four AI tools for [Siril](https://siril.org) into one script and one window: **Umbra Deblur**, **Umbra Denoise**, **Umbra Starless** and **Umbra Gradient**. It is a Siril Python script with AI models. It runs locally on your computer and is free. Pick the tool from the dropdown at the top. The processing code is the same as in the four single-tool scripts.
 
-**Status: Beta (v0.1.1).** Expect rough edges.
+**Status: Beta (v0.2.0).** Expect rough edges.
 
 ![Umbra Astro AI panel](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
 ![Umbra Astro AI update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
@@ -34,7 +34,9 @@ AI noise removal for linear images, made for small-scope stacks and also fine on
 
 ### Umbra Starless
 
-AI star remover for linear or stretched images, with the star layer as its own output. Controls: Star removal, Data, Output, save star layer. Models: Umbra Starless v1.0 (default) and v1.1 (experimental). Weak spots: very bright stars can leave glows, and bright nebula cores (the Orion Nebula core) are partly cut. Details: [umbra-starless](https://github.com/Kishanhpatel/umbra-starless).
+AI star remover for linear or stretched images, with the star layer as its own output. Controls: Star removal, Auto-keep (optional; results vary by image), Data, Output, save star layer. **Preview** removes the stars from the whole image once and opens an editor with correction marks: Remove and Keep brushes, Eraser, Undo stroke, Clear marks, Show marks, **Apply Remove marks after each stroke**, **Apply marks**, zoom and pan, Show original (hold, or Space) and Show star layer. Star removal and Keep marks update at once; Remove marks re-run the network only where you painted. **Apply** reuses the stored result and the marks. Models: Umbra Starless v1.0 (default) and v1.1 (experimental), plus a small separate Auto-keep model (about 3 MB, only needed for Auto-keep; **Download model** offers it, and with the box ticked but the file missing the status line says "Auto-keep needs the Auto-keep model. Press Download model."). The script behaves exactly like the single Umbra Starless script. Weak spots: very bright stars can leave glows, and bright nebula cores (the Orion Nebula core) are partly cut; marks help there. Details: [umbra-starless](https://github.com/Kishanhpatel/umbra-starless).
+
+![Umbra Starless editor](docs/screenshots/Umbra_Astro_AI_starless_editor.png)
 
 ### Umbra Gradient
 
@@ -42,14 +44,17 @@ AI background (gradient) removal for linear images, with no sliders. Model: Umbr
 
 ## Models
 
+Since v0.2.0 the model files store their weights at half size (16-bit) and compute in full 32-bit precision, so the Denoise, Starless and Gradient results are bit-identical to the larger v0.1.x files. If you already have the larger file it keeps working and is not downloaded again.
+
 | Tool | Name | File | Size |
 |---|---|---|---|
 | Deblur | Umbra Deblur v1.0 (default) | `umbra_deblur_v1.0.onnx` | 199 MB |
 | Deblur | Umbra Deblur v1.1 (experimental) | `umbra_deblur_v1.1_experimental.onnx` | 199 MB |
-| Denoise | Umbra Denoise v3.1 (experimental) | `umbra_denoise_v3.1_experimental.onnx` | 199 MB |
-| Starless | Umbra Starless v1.0 (default) | `umbra_starless_v1.0.onnx` | 199 MB |
-| Starless | Umbra Starless v1.1 (experimental) | `umbra_starless_v1.1_experimental.onnx` | 199 MB |
-| Gradient | Umbra Gradient v7.0 | `umbra_gradient_v7.0.onnx` | 223 MB |
+| Denoise | Umbra Denoise v3.1 (experimental) | `umbra_denoise_v3.1_experimental.onnx` | 100 MB |
+| Starless | Umbra Starless v1.0 (default) | `umbra_starless_v1.0.onnx` | 100 MB |
+| Starless | Umbra Starless v1.1 (experimental) | `umbra_starless_v1.1_experimental.onnx` | 100 MB |
+| Starless | Umbra Starless Auto-keep model v1.0 (extra, not a star remover) | `umbra_starless_critic_v1.0.onnx` | 3 MB |
+| Gradient | Umbra Gradient v7.0 | `umbra_gradient_v7.0.onnx` | 112 MB |
 
 `models/models.json` lists all six, with a `tool` field, and points at the release assets of the four tool repositories.
 
@@ -59,7 +64,14 @@ AI background (gradient) removal for linear images, with no sliders. Model: Umbr
 
 ## GPU acceleration
 
-Providers are tried in this order: CUDA, DirectML (Windows), ROCm (AMD on Linux), Core ML (Mac), then CPU. Each one is checked against the CPU result on a small probe tile before it is used. If the result differs, or the provider fails, the script falls back to the CPU. The status line says which one ran ("Ran on ..."). Set `UMBRA_DEBLUR_CPU=1` (or `UMBRA_DENOISE_CPU`, `UMBRA_STARLESS_CPU`, `UMBRA_GRADIENT_CPU`) to force the CPU. On first run the script installs the matching onnxruntime package for your system: `onnxruntime-directml` (Windows), `onnxruntime-gpu` (Linux with an NVIDIA GPU) or plain `onnxruntime` (everything else).
+The GPU is used by default whenever one can be used, and the CPU only as a fallback. Providers are tried in this order: CUDA (NVIDIA), DirectML (Windows), ROCm and MIGraphX (AMD on Linux), OpenVINO (Intel), Core ML (Mac), then CPU. Each one is checked against the CPU result on a small probe tile before it is used; if it fails or the result differs, the script falls back to the CPU. The status line says which one ran ("Ran on ..."). Set the tool's `..._CPU=1` variable (for example `UMBRA_DENOISE_CPU=1`) to force the CPU.
+
+On first run the script installs the onnxruntime package that gives your system a GPU:
+
+- **Mac:** `onnxruntime` (Core ML, Apple GPU, built in).
+- **Windows:** `onnxruntime-directml` (any DirectX 12 GPU: NVIDIA, AMD or Intel; no extra downloads).
+- **Linux with an NVIDIA GPU:** `onnxruntime-gpu` (CUDA). If the system has no CUDA 12 / cuDNN 9 libraries, NVIDIA's own pip packages of them are installed too (a one-time download of about 2 to 3 GB).
+- **Linux with AMD or Intel graphics:** there is no GPU build that installs automatically, so these run on the CPU. If you install `onnxruntime-rocm`, `onnxruntime-migraphx` or `onnxruntime-openvino` yourself in Siril's Python, the script uses it.
 
 ## Testing
 
@@ -80,7 +92,7 @@ Parity numbers against the original PyTorch versions are in the four tool reposi
 
 ## Layout
 
-- `Umbra_Astro_AI.py`: the combined script (v0.1.0, ONNX Runtime, with model download and update check)
+- `Umbra_Astro_AI.py`: the combined script (v0.2.0, ONNX Runtime, with model download and update check)
 - `models/models.json`: manifest for all six models (with a `tool` field)
 - `docs/screenshots/`: panel screenshots
 - `LICENSE`, `LICENSE-MODELS.md`: licenses
