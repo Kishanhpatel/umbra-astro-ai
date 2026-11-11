@@ -2,10 +2,11 @@
 
 Umbra Astro AI puts four AI tools for [Siril](https://siril.org) into one script and one window: **Umbra Deblur**, **Umbra Denoise**, **Umbra Starless** and **Umbra Gradient**. It is a Siril Python script with AI models. It runs locally on your computer and is free. Pick the tool from the dropdown at the top. The processing code is the same as in the four single-tool scripts.
 
-**Status: Beta (v0.2.0).** Expect rough edges.
+**Status: Beta (v0.2.1).** Expect rough edges.
 
 ![Umbra Astro AI panel](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
 ![Umbra Astro AI update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
+![Umbra Astro AI with Umbra Gradient selected: the image is part of the window](docs/screenshots/Umbra_Astro_AI_gradient_window.png)
 
 ## Download and install
 
@@ -59,7 +60,7 @@ Since v0.2.0 the model files store their weights at half size (16-bit) and compu
 
 ## Preview and Apply
 
-**Preview** opens a separate, resizable window with a region of the image before and after (Siril selection of at least 64 px, else a centred 768 x 768 crop; Gradient always uses the whole image). **Apply** replaces the image in Siril. Use Siril's **Undo** to go back. The settings used are written to the Siril log.
+**Preview** opens a separate, resizable window with a region of the image before and after (Siril selection of at least 64 px, else a centred 768 x 768 crop). For Gradient the image is part of the main window instead: **Apply** shows the result of the whole image there (Siril is not changed), **Show original** (hold) and **Show gradient model** sit above the image, and **Apply to Siril** next to **Close** writes the result. **Apply** replaces the image in Siril. Use Siril's **Undo** to go back. The settings used are written to the Siril log.
 
 ## GPU acceleration
 
@@ -91,7 +92,7 @@ Parity numbers against the original PyTorch versions are in the four tool reposi
 
 ## Layout
 
-- `Umbra_Astro_AI.py`: the combined script (v0.2.0, ONNX Runtime, with model download and update check)
+- `Umbra_Astro_AI.py`: the combined script (v0.2.1, ONNX Runtime, with model download and update check)
 - `models/models.json`: manifest for all six models (with a `tool` field)
 - `docs/screenshots/`: panel screenshots
 - `LICENSE`, `LICENSE-MODELS.md`: licenses
