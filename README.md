@@ -36,7 +36,6 @@ AI noise removal for linear images, made for small-scope stacks and also fine on
 
 AI star remover for linear or stretched images, with the star layer as its own output. Controls: Star removal, Auto-keep (optional; results vary by image), Data, Output, save star layer. **Preview** removes the stars from the whole image once and opens an editor with correction marks: Remove and Keep brushes, Eraser, Undo stroke, Clear marks, Show marks, **Apply Remove marks after each stroke**, **Apply marks**, zoom and pan, Show original (hold, or Space) and Show star layer. Star removal and Keep marks update at once; Remove marks re-run the network only where you painted. **Apply** reuses the stored result and the marks. Models: Umbra Starless v1.0 (default) and v1.1 (experimental), plus a small separate Auto-keep model (about 3 MB, only needed for Auto-keep; **Download model** offers it, and with the box ticked but the file missing the status line says "Auto-keep needs the Auto-keep model. Press Download model."). The script behaves exactly like the single Umbra Starless script. Weak spots: very bright stars can leave glows, and bright nebula cores (the Orion Nebula core) are partly cut; marks help there. Details: [umbra-starless](https://github.com/Kishanhpatel/umbra-starless).
 
-![Umbra Starless editor](docs/screenshots/Umbra_Astro_AI_starless_editor.png)
 
 ### Umbra Gradient
 
