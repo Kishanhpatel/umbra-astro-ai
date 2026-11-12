@@ -2,7 +2,7 @@
 
 Umbra Astro AI puts four AI tools for [Siril](https://siril.org) into one script and one window: **Umbra Deblur**, **Umbra Denoise**, **Umbra Starless** and **Umbra Gradient**. It is a Siril Python script with AI models. It runs locally on your computer and is free. Pick the tool from the dropdown at the top. The processing code is the same as in the four single-tool scripts.
 
-**Status: Beta (v0.2.1).** Expect rough edges.
+**Status: Beta (v0.2.2).** Expect rough edges.
 
 ![Umbra Astro AI panel](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
 ![Umbra Astro AI update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
@@ -40,7 +40,7 @@ AI star remover for linear or stretched images, with the star layer as its own o
 
 ### Umbra Gradient
 
-AI background (gradient) removal for linear images, with no sliders. Model: Umbra Gradient v7.0. Weak spots: diagonal bands are only partly removed, and it only handles smooth large-scale gradients. Details: [umbra-gradient](https://github.com/Kishanhpatel/umbra-gradient).
+AI background (gradient) removal for linear images, with no sliders. Model: Umbra Gradient v7.0. Since v0.2.2 very bright stars with a huge round glow (e.g. Alnitak) keep their glow instead of leaving a dark hole, and the sky keeps its colour balance. Weak spots: diagonal bands are only partly removed, and it only handles smooth large-scale gradients. Details: [umbra-gradient](https://github.com/Kishanhpatel/umbra-gradient).
 
 ## Models
 
@@ -92,7 +92,7 @@ Parity numbers against the original PyTorch versions are in the four tool reposi
 
 ## Layout
 
-- `Umbra_Astro_AI.py`: the combined script (v0.2.1, ONNX Runtime, with model download and update check)
+- `Umbra_Astro_AI.py`: the combined script (v0.2.2, ONNX Runtime, with model download and update check)
 - `models/models.json`: manifest for all six models (with a `tool` field)
 - `docs/screenshots/`: panel screenshots
 - `LICENSE`, `LICENSE-MODELS.md`: licenses
