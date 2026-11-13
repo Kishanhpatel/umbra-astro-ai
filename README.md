@@ -95,6 +95,7 @@ Tested:
 - macOS 26 on an Apple M3, with Core ML and with the CPU.
 - Standalone (command line and window test) and inside Siril 1.4.5 run headless (`siril-cli` with `pyscript`): read the image, process it, write it back with an Undo state, save.
 - The window was tested offscreen only.
+- v0.4.1: the hole filling around very bright stars was checked on 40 test images (no image got worse on any of our star-removal measures; clear gains on Rho Ophiuchi, IC 434 and the Taurus widefield).
 - v0.4.0: the shared history (Apply, Undo, Redo, Apply to Siril, Undo all), the brushes (including Clone) and the Space / [ ] keys were tested offscreen with a stand-in for Siril and synthetic mouse drags, not yet in the Siril window itself.
 
 NOT tested:
