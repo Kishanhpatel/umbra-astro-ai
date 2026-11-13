@@ -2,45 +2,51 @@
 
 Umbra Astro AI puts four AI tools for [Siril](https://siril.org) into one script and one window: **Umbra Deblur**, **Umbra Denoise**, **Umbra Starless** and **Umbra Gradient**. It is a Siril Python script with AI models. It runs locally on your computer and is free. Pick the tool from the dropdown at the top. The processing code is the same as in the four single-tool scripts.
 
-**Status: Beta (v0.2.2).** Expect rough edges.
+**Status: Beta (v0.3.0).** Expect rough edges.
 
-![Umbra Astro AI panel](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
-![Umbra Astro AI update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
-![Umbra Astro AI with Umbra Gradient selected: the image is part of the window](docs/screenshots/Umbra_Astro_AI_gradient_window.png)
+![Umbra Astro AI with Umbra Deblur selected, before running, with the green update note](docs/screenshots/Umbra_Astro_AI_panel_updnote.png)
+![Umbra Astro AI with Umbra Deblur selected, after Apply](docs/screenshots/Umbra_Astro_AI_deblur_panel.png)
+![Umbra Astro AI with Umbra Starless selected](docs/screenshots/Umbra_Astro_AI_starless_panel.png)
+![Umbra Astro AI with Umbra Gradient selected](docs/screenshots/Umbra_Astro_AI_gradient_window.png)
+![Umbra Astro AI with Umbra Denoise selected, the model listed as Not Downloaded](docs/screenshots/Umbra_Astro_AI_denoise_panel.png)
+
+*Screenshots (synthetic test image). The window has the controls on the left and the image on the right.*
 
 ## Download and install
 
 1. Download the single file [`Umbra_Astro_AI.py`](https://raw.githubusercontent.com/Kishanhpatel/umbra-astro-ai/main/Umbra_Astro_AI.py) (also attached to the [latest release](https://github.com/Kishanhpatel/umbra-astro-ai/releases/latest)). Save it in any folder you like. Siril has no standard scripts folder name.
 2. In Siril open **Preferences > Scripts**, add that folder, refresh the list, then run **Umbra Astro AI** from the Scripts menu.
 3. First run: Siril installs the Python packages the script needs (numpy, onnxruntime, PyQt6, scipy, astropy). This can take a few minutes.
-4. Choose a tool. If its model is not installed, press **Download model**. The file is checked with SHA-256 and saved in that tool's own folder next to the script: `Umbra Deblur`, `Umbra Denoise`, `Umbra Starless` or `Umbra Gradient`.
+4. Choose a tool. If its model is not installed, the model drop-down lists it as "<model name> (Not Downloaded)". Select it and press **Download**, right of the drop-down. The file is checked with SHA-256 and saved in that tool's own folder next to the script: `Umbra Deblur`, `Umbra Denoise`, `Umbra Starless` or `Umbra Gradient`.
 
 These are the same folders the single-tool scripts use, so models are shared: nothing downloads twice if you use both. The models themselves are published on the four tool repositories (see below), not on this one.
 
 **Manual install.** Download the `.onnx` file from the tool's release page into that tool's folder. To use another folder, set the tool's variable: `UMBRA_DEBLUR_MODEL_DIR`, `UMBRA_DENOISE_MODEL_DIR`, `UMBRA_STARLESS_MODEL_DIR` or `UMBRA_GRADIENT_MODEL_DIR`. `UMBRA_<TOOL>_MODEL` can point at one specific model file.
 
-**Updates.** **Check for updates** compares your installed models for the current tool and the script version with the published list (`models/models.json`). A new or changed model downloads only when you press the button. A newer script is shown as a link to the release page; the script never replaces itself. Nothing is sent about you or your computer (only a generic client name). With no network the installed models keep working. Set `UMBRA_OFFLINE=1` (or `UMBRA_<TOOL>_OFFLINE=1`) to turn the lookup off.
+**Updates.** Each time the script opens, it checks the published list (`models/models.json`) for a newer script and for new or changed models of the current tool. A line under the model row shows the result. In green: "The models for this tool are up to date." In yellow: "There is an update to this script available" or "There is a new model available for this tool, select the model in the dropdown and click Download to install." A model downloads only when you press **Download**. A newer script is shown as a link to the release page; the script never replaces itself. Nothing is sent about you or your computer (only a generic client name). With no network the installed models keep working. Set `UMBRA_OFFLINE=1` (or `UMBRA_<TOOL>_OFFLINE=1`) to turn the lookup off.
 
-**Switching tools.** Only one model is kept in memory. Switching tools unloads the previous one. Each tool remembers its own model and settings.
+**Switching tools.** Only one model is kept in memory. Switching tools unloads the previous one. Each tool remembers its own model and settings. The window keeps its size when you switch tools or models.
+
+**The window.** All four tools share one window. It has a fixed-width controls column on the left and a large image area on the right. The image area shows the current image (auto-stretched) as soon as the window opens. Scroll or pinch to zoom and drag to pan. Double-click the image or press **Fit** to fit the whole image. Hold down **Show original** (or the Space key) to compare with the original; release it to see the result again. The window keeps its size when you switch tools or models.
 
 ## The tools
 
 ### Umbra Deblur
 
-AI deblur (deconvolution) for linear images. Measures the star shape, then sharpens in a number of passes. Controls: Correct Only, Sharpening (0 to 8), Protect star shapes, Automatic PSF / PSF Diameter, Sharpen Stars, Halo Reduction. Models: Umbra Deblur v1.0 (default) and v1.1 (experimental). Weak spot: very fine 1 to 4 pixel detail inside bright cores. Details: [umbra-deblur](https://github.com/Kishanhpatel/umbra-deblur).
+AI deblur (deconvolution) for linear images. Measures the star shape, then sharpens in a number of passes. Controls: Aberration Removal Only, Sharpening (0 to 8), Protect star shapes, Automatic PSF / PSF Diameter (Automatic PSF is greyed out when the image has no stars, because the current models need stars to measure the PSF), Sharpen Stars, Halo Reduction. It runs on the whole image. Models: Umbra Deblur v1.0 (default) and v1.1 (experimental). Weak spot: very fine 1 to 4 pixel detail inside bright cores. Details: [umbra-deblur](https://github.com/Kishanhpatel/umbra-deblur).
 
 ### Umbra Denoise
 
-AI noise removal for linear images, made for small-scope stacks and also fine on DSLR and mono. Controls: Denoise, Detail, Pattern noise. Model: Umbra Denoise v3.1 (experimental). Weak spots: star cores come out about 1% brighter (not for photometry), some very faint structure is smoothed. Details: [umbra-denoise](https://github.com/Kishanhpatel/umbra-denoise).
+AI noise removal for linear images, made for small-scope stacks and also fine on DSLR and mono. Controls: Denoise, Detail, Pattern noise. It runs on the whole image. Model: Umbra Denoise v3.1 (experimental). Weak spots: star cores come out about 1% brighter (not for photometry), some very faint structure is smoothed. Details: [umbra-denoise](https://github.com/Kishanhpatel/umbra-denoise).
 
 ### Umbra Starless
 
-AI star remover for linear or stretched images, with the star layer as its own output. Controls: Star removal, Auto-keep (optional; results vary by image), Data, Output, save star layer. **Preview** removes the stars from the whole image once and opens an editor with correction marks: Remove and Keep brushes, Eraser, Undo stroke, Clear marks, Show marks, **Apply Remove marks after each stroke**, **Apply marks**, zoom and pan, Show original (hold, or Space) and Show star layer. Star removal and Keep marks update at once; Remove marks re-run the network only where you painted. **Apply** reuses the stored result and the marks. Models: Umbra Starless v1.0 (default) and v1.1 (experimental), plus a small separate Auto-keep model (about 3 MB, only needed for Auto-keep; **Download model** offers it, and with the box ticked but the file missing the status line says "Auto-keep needs the Auto-keep model. Press Download model."). The script behaves exactly like the single Umbra Starless script. Weak spots: very bright stars can leave glows, and bright nebula cores (the Orion Nebula core) are partly cut; marks help there. Details: [umbra-starless](https://github.com/Kishanhpatel/umbra-starless).
+AI star remover for linear or stretched images, with the star layer as its own output. Controls: Star removal, **Show star mask**, and correction marks painted directly on the image: Remove, Keep and Eraser brushes (click a brush to paint, click it again to go back to pan and zoom; right-click erases; the middle mouse button pans), Brush size, Opacity (5 to 100%), Show marks and Clear marks. After each stroke the result updates by itself. The star removal is computed once per image and model, so marks and the Star removal slider update quickly. **Apply to Siril** always writes the starless image and saves the star layer as `starmask_<image file name>` next to the image (for example `starmask_M42.fits`; `_1`, `_2` is added instead of overwriting). Star removal below 100% keeps linear data linear. The Output and Data drop-downs and Auto-keep are not in the window; the command-line flags `--output`, `--data` and `--auto-keep` still exist. Models: Umbra Starless v1.0 (default) and v1.1 (experimental), plus a small separate Auto-keep model (about 3 MB), which is only used by the command-line `--auto-keep` option and is not offered by **Download**. If the StarNet2 command-line program is installed (found through Siril's StarNet setting or the usual install locations), the model list also shows "StarNet++ vX (installed)" and the script uses it for star removal. StarNet++ is not included or distributed with Umbra, and older versions that only take TIFF files are not supported. The script behaves exactly like the single Umbra Starless script. Weak spots: very bright stars can leave glows, and bright nebula cores (the Orion Nebula core) are partly cut; marks help there. Details: [umbra-starless](https://github.com/Kishanhpatel/umbra-starless).
 
 
 ### Umbra Gradient
 
-AI background (gradient) removal for linear images, with no sliders. Model: Umbra Gradient v7.0. Since v0.2.2 very bright stars with a huge round glow (e.g. Alnitak) keep their glow instead of leaving a dark hole, and the sky keeps its colour balance. Weak spots: diagonal bands are only partly removed, and it only handles smooth large-scale gradients. Details: [umbra-gradient](https://github.com/Kishanhpatel/umbra-gradient).
+AI background (gradient) removal for linear images, with no sliders and no options (use `--gradient-out` on the command line to save the gradient model). **Show gradient model** shows the subtracted background. Model: Umbra Gradient v7.0. Since v0.2.2 very bright stars with a huge round glow (e.g. Alnitak) keep their glow instead of leaving a dark hole, and the sky keeps its colour balance. Weak spots: diagonal bands are only partly removed, and it only handles smooth large-scale gradients. Details: [umbra-gradient](https://github.com/Kishanhpatel/umbra-gradient).
 
 ## Models
 
@@ -58,9 +64,9 @@ Since v0.2.0 the model files store their weights at half size (16-bit) and compu
 
 `models/models.json` lists all six, with a `tool` field, and points at the release assets of the four tool repositories.
 
-## Preview and Apply
+## Apply and Apply to Siril
 
-**Preview** opens a separate, resizable window with a region of the image before and after (Siril selection of at least 64 px, else a centred 768 x 768 crop). For Gradient the image is part of the main window instead: **Apply** shows the result of the whole image there (Siril is not changed), **Show original** (hold) and **Show gradient model** sit above the image, and **Apply to Siril** next to **Close** writes the result. **Apply** replaces the image in Siril. Use Siril's **Undo** to go back. The settings used are written to the Siril log.
+Every tool has the same two buttons. **Apply** runs the tool on the whole image and shows the result in the image area; the image in Siril is not changed. **Apply to Siril** writes the result to the image in Siril. Use Siril's **Undo** to go back. If nothing changed since **Apply**, the result shown is reused. **Undo all** (bottom row, between **Close** and **Apply to Siril**) puts back the image as it was when the window opened. It becomes active after an **Apply to Siril**. There is no Preview button and no separate preview window. The settings used are written to the Siril log.
 
 ## GPU acceleration
 
@@ -92,7 +98,7 @@ Parity numbers against the original PyTorch versions are in the four tool reposi
 
 ## Layout
 
-- `Umbra_Astro_AI.py`: the combined script (v0.2.2, ONNX Runtime, with model download and update check)
+- `Umbra_Astro_AI.py`: the combined script (v0.3.0, ONNX Runtime, with model download and update check)
 - `models/models.json`: manifest for all six models (with a `tool` field)
 - `docs/screenshots/`: panel screenshots
 - `LICENSE`, `LICENSE-MODELS.md`: licenses
