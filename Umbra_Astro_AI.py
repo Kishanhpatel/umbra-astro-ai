@@ -7,7 +7,8 @@ Run in Siril (Scripts menu), or standalone:
   python Umbra_Astro_AI.py --tool deblur|denoise|starless|gradient --image in.fits --out out.fits [--model PATH.onnx] [tool options, see --help]
   python Umbra_Astro_AI.py --ui-test        (opens the window on a fake image, runs Apply once, exits)
   python Umbra_Astro_AI.py --check-updates | --download [MODEL_ID|all]"""
-VERSION = '0.4.1'
+VERSION = '0.4.2'
+# 0.4.2: Deblur: cleaner results at high Iterations: each iteration now takes the same step size the models were trained with, so the dark pits and beading that appeared at 6-8 Iterations are mostly gone (Iterations above about 5 change little now).
 # 0.4.1: Starless: no more black or coloured spots where very bright stars were removed (e.g. around Alnitak): the holes are filled to the surrounding sky or nebula level with matching grain.
 # 0.4.0: edits carry over between tools (Denoise, then Deblur starts from the denoised image); Undo / Redo above the image (Cmd/Ctrl+Z); Undo all fixed (back to the opened image, also in Siril); Apply is a small blue button inside the panel; drop-down menus show the whole list; hold Space anywhere to see the original, [ and ] change the brush size; Denoise, Deblur and Gradient get Restore / Clone / Eraser brushes; Starless: Apply under the model list, slider and brushes unlock after Apply, Star removal starts at 100%, StarNet++ on small images; Deblur: Sharpening is now Iterations.
 # 0.3.0: new window like Umbra Guided GHS: fixed controls column, zoomable image on the right that shows the original at once; Apply shows the result there, Apply to Siril writes it, Undo all puts back the starting image; Download sits next to the model list, models not installed are listed as (Not Downloaded), and the update check runs at every start (green / yellow note); Starless: brushes on the image, Show star mask, starmask_<image name> saved, StarNet++ when installed, Output / Data / Auto-keep removed; Deblur: Aberration Removal Only, Automatic PSF greyed out without stars; Gradient: save option removed.
@@ -2902,8 +2903,8 @@ def _engine_deblur():
     AUTO_PSF_MAX = 9.0       # larger Automatic PSF readings come from star residues (starless images)
     STARLESS_DENSITY = 15.0  # isolated stars per megapixel below which the image counts as starless
     STARLESS_FWHM = 4.0      # fallback used then
-    SCHED_R = 0.8
-    SCHED_FLOOR = 1.0
+    SCHED_R = 0.65          # 2026-11-13: matches the training rollout step (rel_ratio 0.65); 0.8 left dark pits at 6-8 iterations
+    SCHED_FLOOR = 1.15      # = training nebula floor (neb_floor 1.15)
     CORR_REF = 2.2
     CORR_TRIGGER = 2.8
     CORR_C2R = 1.64
